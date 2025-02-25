@@ -1,0 +1,212 @@
+/* style.css */
+
+/* VARIÁVEIS DE CORES */
+:root {
+    --primary-color: #1a73e8;
+    /* Azul principal */
+    --secondary-color: #222;
+    /* Cor de texto primária */
+    --background-color: #ffffff;
+    /* Fundo geral */
+    --accent-color: #f2f2f2;
+    /* Fundo claro de destaque */
+    --bg-gradient: linear-gradient(135deg, #1a73e8, #3f51b5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background-color);
+    color: var(--secondary-color);
+}
+
+/* BARRA DE NAVEGAÇÃO */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 1rem 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 500;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+nav ul li a.active,
+nav ul li a:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+/* HERO / CABEÇALHO PRINCIPAL */
+.hero {
+    min-height: 70vh;
+    background: var(--bg-gradient);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    max-width: 700px;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.5;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #fff;
+    color: var(--primary-color);
+    padding: 0.8rem 1.2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    opacity: 0.8;
+    color: var(--secondary-color);
+}
+
+/* SEÇÕES PRINCIPAIS */
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2rem auto;
+    width: 80%;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.feature-card {
+    flex: 1 1 280px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h2 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.feature-card p {
+    color: #555;
+}
+
+/* SEÇÃO DE CONTEÚDO */
+.page-header {
+    background: var(--bg-gradient);
+    color: #fff;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.content {
+    width: 80%;
+    margin: 0 auto 2rem auto;
+    line-height: 1.6;
+}
+
+.content h2 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.content h3 {
+    margin-top: 1rem;
+    color: var(--secondary-color);
+}
+
+.content p,
+.content li {
+    margin-bottom: 1rem;
+}
+
+.content pre {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.content code {
+    color: #d14;
+}
+
+/* RODAPÉ */
+footer {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+.footer-text {
+    font-size: 0.9rem;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .features {
+        width: 90%;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

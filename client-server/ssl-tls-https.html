@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SSL, TLS e HTTPS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="logo">Projeto HTTPS</div>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="ssl-tls-https.html" class="active">SSL/TLS/HTTPS</a></li>
+            <li><a href="analise.html">Análise</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>Protocolos de Segurança: SSL, TLS e HTTPS</h1>
+    </header>
+
+    <main class="content">
+        <!-- ================== Introdução ================== -->
+        <section>
+            <h2>1. Introdução</h2>
+            <p>
+                A segurança na comunicação entre clientes e servidores na Web é um dos aspectos mais críticos da
+                Internet moderna.
+                O protocolo HTTPS (Hypertext Transfer Protocol Secure) desempenha um papel central ao garantir que as
+                informações
+                trocadas sejam protegidas contra ataques, interceptações e adulterações.
+            </p>
+            <p>
+                O HTTPS é baseado em dois importantes protocolos de segurança: o SSL (Secure Sockets Layer) e o TLS
+                (Transport Layer Security).
+                Esses protocolos asseguram que a comunicação ocorra de maneira confidencial, utilizando criptografia,
+                além de autenticar
+                as partes envolvidas e garantir a integridade das mensagens. Este trabalho explora o funcionamento do
+                HTTPS, desde os conceitos
+                teóricos de SSL/TLS até a implementação prática de um cliente e servidor seguros.
+            </p>
+            <p>
+                A primeira parte deste estudo aborda os princípios básicos de segurança implementados pelos protocolos
+                SSL, TLS e HTTPS,
+                destacando funcionalidades, algoritmos de criptografia e a evolução das versões desses protocolos. Já a
+                segunda parte
+                foca na implementação prática de um cliente e servidor HTTPS, com análises que evidenciam a eficácia
+                desses protocolos.
+            </p>
+        </section>
+
+        <!-- ================== Objetivos e Funcionalidades ================== -->
+        <section>
+            <h2>2. Objetivos e Funcionalidades Gerais dos Protocolos</h2>
+
+            <h3>2.1. SSL (Secure Sockets Layer)</h3>
+            <p>
+                <strong>Objetivo:</strong><br>
+                O SSL foi projetado para garantir uma comunicação segura entre clientes e servidores, criando um canal
+                criptografado que protege os dados transmitidos contra interceptação e modificação por terceiros. Ele
+                autentica as partes envolvidas na comunicação, assegura a integridade dos dados e mantém sua
+                confidencialidade.
+            </p>
+            <p><strong>Funcionalidades:</strong></p>
+            <ul>
+                <li><strong>Autenticação:</strong> O SSL usa certificados digitais para autenticar o servidor e,
+                    opcionalmente, o cliente.</li>
+                <li><strong>Criptografia:</strong> Protege os dados transmitidos usando algoritmos de criptografia
+                    simétrica e assimétrica.</li>
+                <li><strong>Integridade:</strong> Garante que os dados não sejam alterados durante a transmissão,
+                    utilizando funções de hash e códigos de autenticação de mensagem (MAC).</li>
+                <li><strong>Troca de Chaves Segura:</strong> Utiliza algoritmos como o RSA ou o Diffie-Hellman para
+                    realizar uma troca de chaves segura entre as partes envolvidas chaves.</li>
+            </ul>
+
+            <h3>2.2. TLS (Transport Layer Security)</h3>
+            <p>
+                <strong>Objetivo:</strong><br>
+                O TLS é o sucessor do SSL e foi desenvolvido para corrigir vulnerabilidades e melhorar a segurança do
+                protocolo. Assim como o SSL, o TLS visa garantir uma comunicação segura por meio de criptografia,
+                autenticação e integridade dos dados, mas com mecanismos mais robustos e seguros.
+            </p>
+            <p><strong>Funcionalidades:</strong></p>
+            <ul>
+                <li><strong>Melhoria na Segurança:</strong> Comparado ao SSL, o TLS oferece suporte a algoritmos de
+                    criptografia mais fortes e mecanismos de verificação de integridade mais eficientes.</li>
+                <li><strong>Troca de Chaves Segura:</strong> TLS utiliza a troca de chaves por meio de criptografia
+                    assimétrica, garantindo que as chaves de sessão sejam trocadas de forma segura.</li>
+                <li><strong>Autenticação e Confidencialidade:</strong> Assim como o SSL, o TLS autentica o servidor
+                    (e, opcionalmente, o cliente) e mantém a confidencialidade da comunicação.</li>
+                <li><strong>Proteção Contra Ataques:</strong> TLS adiciona proteções contra ataques como o ”Man-in-
+                    the-Middle” e fornece mais camadas de segurança para garantir que as sessões não
+                    possam ser interceptadas ou modificadas.
+                </li>
+            </ul>
+
+            <h3>2.3. HTTPS (Hypertext Transfer Protocol Secure)</h3>
+            <p>
+                <strong>Objetivo:</strong><br>
+                O HTTPS é a versão segura do protocolo HTTP (Hypertext Transfer Protocol),
+                utilizado para transferir dados na Web. Ele combina o protocolo HTTP com a camada
+                de segurança fornecida pelo SSL/TLS, garantindo que as comunicações entre o navegador
+                do cliente e o servidor sejam seguras e privadas.
+            </p>
+            <p><strong>Funcionalidades:</strong></p>
+            <ul>
+                <li><strong>Criptografia de Dados:</strong> HTTPS garante que todos os dados transmitidos entre o
+                    cliente e o servidor sejam criptografados, evitando que possam ser lidos por terceiros.</li>
+                <li><strong>Autenticação:</strong> HTTPS autentica o servidor, confirmando para o cliente que ele está
+                    se conectando ao servidor correto por meio de certificados digitais.</li>
+                <li><strong>Integridade dos Dados:</strong> HTTPS garante que os dados não sejam alterados ou cor-
+                    rompidos durante a transmissão, protegendo-os de ataques como o ”Man-in-the-
+                    Middle”.</li>
+                <li><strong>Confiança e Privacidade:</strong> HTTPS oferece uma experiência de navegação mais se-
+                    gura, sendo essencial para sites que manipulam dados sensíveis como informações
+                    de login, números de cartão de crédito, entre outros.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-text">&copy; 2025 - Projeto HTTPS em Python</p>
+    </footer>
+</body>
+
+</html>

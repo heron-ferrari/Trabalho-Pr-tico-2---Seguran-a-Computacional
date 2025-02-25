@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Análise e Testes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="logo">Projeto HTTPS</div>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="ssl-tls-https.html">SSL/TLS/HTTPS</a></li>
+            <li><a href="analise.html" class="active">Análise</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>Análise das Comunicações e Conclusões</h1>
+    </header>
+
+    <main class="content">
+        <section>
+            <h2>1. Implementação Prática</h2>
+            <p>
+                Para demonstrar o funcionamento do HTTPS, criei:
+            </p>
+            <ul>
+                <li><strong>server.py</strong>: um servidor HTTPS usando <code>http.server</code> e <code>ssl</code>;
+                </li>
+                <li><strong>client.py</strong>: um cliente que carrega explicitamente o certificado do servidor
+                    (<code>server.crt</code>);</li>
+                <li><strong>client_without_server_certification.py</strong>: um cliente que não carrega o certificado do
+                    servidor, resultando em erro de verificação.</li>
+            </ul>
+            <p>Ambos os clientes tentam acessar <code>https://localhost:8443</code>. Abaixo, trechos do código e do
+                comportamento observado.</p>
+        </section>
+
+        <section>
+            <h2>2. Códigos</h2>
+            <h3>server.py</h3>
+            <pre><code>import http.server
+
+import ssl
+from http.server import SimpleHTTPRequestHandler
+
+def run_secure_server(host="localhost", port=8443):
+    server_address = (host, port)
+    httpd = http.server.HTTPServer(server_address, SimpleHTTPRequestHandler)
+    
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain(certfile="server.crt", keyfile="server.key")
+    
+    httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
+    print(f"Servidor HTTPS iniciado em https://{host}:{port}")
+    httpd.serve_forever()
+
+if __name__ == "__main__":
+    run_secure_server()</code></pre>
+            <p>
+                Este servidor carrega o certificado (<code>server.crt</code>) e a chave privada
+                (<code>server.key</code>),
+                e inicia na porta 8443, servindo arquivos do diretório atual via HTTPS.
+            </p>
+
+            <h3>client.py</h3>
+            <pre><code>import socket
+import ssl
+
+def https_client(host="localhost", port=8443):
+    context = ssl.create_default_context()
+    context.load_verify_locations("server.crt")
+    with socket.create_connection((host, port)) as sock:
+        with context.wrap_socket(sock, server_hostname=host) as ssock:
+            print("Conexão TLS estabelecida. Certificado do servidor:")
+            print(ssock.getpeercert())
+            request = f"GET / HTTP/1.1\r\nHost: {host}\r\n\r\n"
+            ssock.sendall(request.encode("utf-8"))
+            response = ssock.recv(4096)
+            print("Resposta do servidor:")
+            print(response.decode("utf-8"))
+
+if __name__ == "__main__":
+    https_client()</code></pre>
+            <p>
+                Aqui, o cliente carrega explicitamente o certificado do servidor (<code>server.crt</code>) via
+                <code>context.load_verify_locations()</code>. Isso permite validar a autenticidade do servidor.
+            </p>
+
+            <h3>client_without_server_certification.py</h3>
+            <pre><code>import socket
+import ssl
+
+def https_client(host="localhost", port=8443):
+    context = ssl.create_default_context()
+    # context.load_verify_locations("server.crt")  # Comentado, não confia no certificado
+    with socket.create_connection((host, port)) as sock:
+        with context.wrap_socket(sock, server_hostname=host) as ssock:
+            print("Conexão TLS estabelecida. Certificado do servidor:")
+            print(ssock.getpeercert())
+            request = f"GET / HTTP/1.1\r\nHost: {host}\r\n\r\n"
+            ssock.sendall(request.encode("utf-8"))
+            response = ssock.recv(4096)
+            print("Resposta do servidor:")
+            print(response.decode("utf-8"))
+
+if __name__ == "__main__":
+    https_client()</code></pre>
+            <p>
+                Nesse cliente, a linha de carregamento do certificado está comentada. Como o servidor usa um certificado
+                autoassinado, o <code>ssl.SSLCertVerificationError</code> ocorre, pois o cliente não confia no servidor.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Retornos do Terminal</h2>
+            <h3>3.1. Execução de <code>client.py</code></h3>
+            <pre><code>python client.py
+Conexão TLS estabelecida. Certificado do servidor:
+{'subject': ((('countryName', 'BR'),), (('stateOrProvinceName', 'Some-State'),),
+ (('organizationName', 'Internet Widgits Pty Ltd'),),
+ (('commonName', 'localhost'),)),
+ 'issuer': ...,
+ 'notBefore': 'Feb 16 21:03:05 2025 GMT',
+ 'notAfter':  'Feb 16 21:03:05 2026 GMT'}
+Resposta do servidor:
+HTTP/1.0 200 OK
+Server: SimpleHTTP/0.6 Python/3.10.8
+Date: Sun, 16 Feb 2025 21:47:06 GMT
+Content-type: text/html
+Content-Length: 1585
+Last-Modified: ...
+</code></pre>
+            <p>
+                O handshake TLS ocorreu com sucesso, pois o cliente confiou no certificado. Em seguida, recebeu a página
+                padrão
+                do servidor via HTTP/1.0.
+            </p>
+
+            <h3>3.2. Execução de <code>client_without_server_certification.py</code></h3>
+            <pre><code>python client_without_server_certification.py
+Traceback (most recent call last):
+  ...
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] self-signed certificate (_ssl.c:997)
+</code></pre>
+            <p>
+                Como esperado, o cliente não possui o certificado do servidor em sua lista de confiança, gerando um erro
+                de verificação.
+                Isso confirma que, sem <code>load_verify_locations</code>, o <strong>cliente rejeita</strong>
+                certificados autoassinados
+                por não reconhecê-los como confiáveis.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Conclusão</h2>
+            <p>
+                Os testes comprovam que a comunicação HTTPS está efetivamente criptografada e que a verificação de
+                certificado
+                impede conexões não confiáveis. O <strong>client.py</strong> valida o servidor e recebe a página,
+                enquanto
+                o <strong>client_without_server_certification.py</strong> falha no handshake.
+            </p>
+            <p>
+                Em cenários reais, usar certificados emitidos por Autoridades Certificadoras (CA) confiáveis evita esse
+                problema,
+                pois o cliente poderá verificar o servidor sem precisar carregar manualmente um certificado
+                autoassinado.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-text">&copy; 2025 - Projeto HTTPS em Python</p>
+    </footer>
+</body>
+
+</html>
